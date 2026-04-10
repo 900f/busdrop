@@ -101,7 +101,7 @@ export default function MapCanvas({
 
   // ── Pixel-perfect coordinate conversion ───────────────────────────────────
   // Must use canvas.getBoundingClientRect() scaled to canvas logical size
-  const eventToNorm = useCallback((e: MouseEvent | Touch): Point => {
+  const eventToNorm = useCallback((e: MouseEvent | TouchEvent): Point => {
     const canvas = canvasRef.current
     if (!canvas) return {x:0,y:0}
     const rect = canvas.getBoundingClientRect()
