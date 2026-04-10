@@ -101,17 +101,17 @@ export default function MapCanvas({
 
   // ── Pixel-perfect coordinate conversion ───────────────────────────────────
   // Must use canvas.getBoundingClientRect() scaled to canvas logical size
-  const eventToNorm = useCallback((e: MouseEvent | Touch): Point => {
+  const eventToNorm = useCallback((clientX: number, clientY: number): Point => {
     const canvas = canvasRef.current
-    if (!canvas) return {x:0,y:0}
+    if (!canvas) return { x: 0, y: 0 }
+
     const rect = canvas.getBoundingClientRect()
-    // rect.width/height = CSS display size (may differ from canvas.width/height)
-    const scaleX = canvas.width  / rect.width
+    const scaleX = canvas.width / rect.width
     const scaleY = canvas.height / rect.height
-    const clientX = e.clientX
-    const clientY = e.clientY
+
     const px = (clientX - rect.left) * scaleX
-    const py = (clientY - rect.top)  * scaleY
+    const py = (clientY - rect.top) * scaleY
+
     return {
       x: Math.max(0, Math.min(1, px / canvas.width)),
       y: Math.max(0, Math.min(1, py / canvas.height)),
@@ -328,8 +328,15 @@ export default function MapCanvas({
   // ── Event handlers ────────────────────────────────────────────────────────
   const onDown = (e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault()
-    const raw = 'touches' in e ? e.touches[0] : e.nativeEvent as MouseEvent
-    const p = eventToNorm(raw)
+    const clientX = 'touches' in e
+      ? e.touches[0].clientX
+      : e.nativeEvent.clientX
+
+    const clientY = 'touches' in e
+      ? e.touches[0].clientY
+      : e.nativeEvent.clientY
+
+    const p = eventToNorm(clientX, clientY)
     if (mode === 'draw-bus') {
       drawing.current = true
       routeRef.current = [p]
@@ -342,8 +349,15 @@ export default function MapCanvas({
   const onMove = (e: React.MouseEvent | React.TouchEvent) => {
     if (!drawing.current || mode !== 'draw-bus') return
     e.preventDefault()
-    const raw = 'touches' in e ? e.touches[0] : e.nativeEvent as MouseEvent
-    const p = eventToNorm(raw)
+    const clientX = 'touches' in e
+      ? e.touches[0].clientX
+      : e.nativeEvent.clientX
+
+    const clientY = 'touches' in e
+      ? e.touches[0].clientY
+      : e.nativeEvent.clientY
+
+    const p = eventToNorm(clientX, clientY)
     const prev = routeRef.current[routeRef.current.length-1]
     if (!prev) return
     const dx=(p.x-prev.x)*canvasSize, dy=(p.y-prev.y)*canvasSize
