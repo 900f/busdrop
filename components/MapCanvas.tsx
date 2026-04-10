@@ -108,8 +108,8 @@ export default function MapCanvas({
     // rect.width/height = CSS display size (may differ from canvas.width/height)
     const scaleX = canvas.width  / rect.width
     const scaleY = canvas.height / rect.height
-    const clientX = 'clientX' in e ? e.clientX : e.clientX
-    const clientY = 'clientY' in e ? e.clientY : e.clientY
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
     const px = (clientX - rect.left) * scaleX
     const py = (clientY - rect.top)  * scaleY
     return {
