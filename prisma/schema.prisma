@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Drop {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  mapType   String   // "current" | "og"
+  busRoute  Json     // [{x, y}, ...]
+  dropPoint Json     // {x, y}
+  landPoint Json     // {x, y}
+  jumpTick  Float    // seconds after bus start to jump
+  flightPath Json    // [{x, y}, ...] computed path
+  createdAt DateTime @default(now())
+  views     Int      @default(0)
+}

@@ -1,0 +1,10 @@
+Place your Fortnite map images here:
+  public/maps/current.jpg  — Chapter 7 Season 2 map
+  public/maps/og.jpg       — OG/Chapter 1 map
+
+Recommended resolution: 1024x1024 or 2048x2048 JPEG.
+You can find high-quality map images at:
+  https://fortnite.gg/map
+  https://progameguides.com/fortnite/fortnite-map/
+
+The MapCanvas component will show a grid fallback if images are missing.
